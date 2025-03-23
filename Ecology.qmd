@@ -202,8 +202,7 @@ Mes_Categ <- inner_join(Mes, Measures_Cat, by = "ACTION_UID") %>%
              inner_join(CAT_Mini, by = c("WATERBODY_ID" = "WB_ID")) %>% 
               filter(!CREATED_DATE== "01/01/1980" & DEPRECATED_CATEGORY == "No") %>% 
               distinct() %>% 
-              arrange(WATERBODY_ID)
-
+              arrange(WATERBODY_ID); rm(CAT_Mini)
 
 
    DT::datatable(Mes_Categ[,c(16,3,10,12:14)],
@@ -229,7 +228,7 @@ CDE_f <- CDE %>%
   filter(Class.Master.Master == "ECO" & Year == "2022")
 
   
- # RNAG <- RNAG %>% 
+ # RNAG %<>% 
     #           
      #           filter(CREATED_DATE == sort(CREATED_DATE)[length(sort(CREATED_DATE))])# %>%   # We want the most recent creation date for each pressure
    # mutate(
