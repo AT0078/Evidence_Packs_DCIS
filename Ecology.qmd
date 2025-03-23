@@ -74,7 +74,6 @@ CDE_e_2019 <- CDE %>%
   filter(Classification.Item == "Biological quality elements" & 
          Year == "2019" & Cycle == "3")
 
-#test
 ```
 
 In the 2022 interim WFD classification, the `r unique(CAT$OPCAT_NAME)` saw `r round(((table(CDE_e_2022$Status)[[1]][1]/length(unique(CDE_e_2022$Water.Body)))*100),0)`% of waterbodies achieved *`r row.names(table(CDE_e_2022$Status))[1]`*, whilst `r round(((table(CDE_e_2022$Status)[[2]][1]/length(unique(CDE_e_2022$Water.Body)))*100),0)`% of waterbodies achieved *`r row.names(table(CDE_e_2022$Status))[2]`*, and `r round(((table(CDE_e_2022$Status)[[3]][1]/length(unique(CDE_e_2022$Water.Body)))*100),0)`% of waterbodies achieved *`r row.names(table(CDE_e_2022$Status))[3]`*.
@@ -83,11 +82,6 @@ In comparison, the 2019 WFD classification saw `r  round(((table(CDE_e_2019$Stat
 
 ```{r}
 #| label: Ecological Overall CDE Map
-
-library(leaflet)
-library(dplyr)
-library(magrittr)
-
 
 # Define palette
 
