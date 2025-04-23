@@ -6,10 +6,8 @@ An Overview.qmd page which contains river and groundwater catchment geographic i
 A Water_quality.qmd page which contains Phys-Chem water quality data at a range of monitoring data granularity from WFD waterbody, WFD site and additional monitoring site data.
 An Ecology.qmd page which contains biological quality elements.
 
-
+File structure of Repo:
 ```
-/Catchment Evidence Pack/
-│
 ├── _quarto.yml              # Project configuration (multi-page site)
 ├── index.qmd                # Main homepage
 ├── Overview.qmd             # page on surface water and groundwater catchment boundries, catchment topography, geology, bathing waters etc.
