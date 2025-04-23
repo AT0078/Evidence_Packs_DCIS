@@ -16,7 +16,7 @@ File structure of Repo:
 ├── Physical_Habitat.qmd                # page on 
 ├── Water_Resources.qmd                # Additional page 2
 ├── scripts                
-│   └── Catch_Set_Up.R        # Determines catchment to be rendered in each .qmd page above
+│   └── Catch_Set_Up.R        # Determines WFD catchment to be rendered in each .qmd page above
 │   └── WIMS_Transform_Script.R  # Transforms WIMS data to match catchment of choice.
 ├── styles/
 │   └── styles.css         # Custom CSS
