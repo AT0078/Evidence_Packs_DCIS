@@ -313,6 +313,13 @@ inver <- inv %>%
 inver_join <- inver %>% rename(Northing = ngr_prefix, 
                                ngr_prefix = northing) %>% select(2, Northing, easting, 106)
 
+# Load site level 2022 classifications.
+Invert_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_C3_River_Invertebrates_Draft_Results_v1.xlsx", sheet= "Site results") %>% 
+                    rename_with(make.names) %>% 
+                    filter(Site.Area == "Wessex") %>% 
+                    mutate(Site.ID = as.numeric(Site.ID))
+
+
 Inv_Site <- Invert_Site %>% inner_join(inver_join, by = c("Site.ID" = "site_id"))
   
   
@@ -340,14 +347,9 @@ CDE_Inv_19<- CDE %>%
                    Year == "2019")
 
 
-# Load site level 2022 classifications.
-Invert_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_C3_River_Invertebrates_Draft_Results_v1.xlsx", sheet= "Site results") %>% 
-                    rename_with(make.names) %>% 
-                    filter(Site.Area == "Wessex") %>% 
-                    mutate(Site.ID = as.numeric(Site.ID))
 
 #Load in site coords
-  Site_Coords <- read.csv("/dbfs/FileStore/WSX_HGray/Sites.csv") %>% 
+  Site_Coords <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/Sites.csv") %>% 
                           rename_with(tolower) %>% 
                           rename(Site.ID = site_id) %>% 
                           mutate(Site.ID = as.numeric(Site.ID))
@@ -652,11 +654,6 @@ CDE_Mac_19<- CDE %>%
 
   MacPs <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_Cycle_3_River_Macrophytes_draft_sub_element_results_v3.xlsx", sheet = "2022_C3_Macrophytes_Site") %>% 
                             rename_with(make.names) 
- #Load in site coords
-   Site_Coords <- read.csv("/dbfs/FileStore/WSX_HGray/Sites.csv") %>% 
-                          rename_with(tolower) %>% 
-                          rename(Site.ID = site_id) %>% 
-                          mutate(Site.ID = as.numeric(Site.ID))
 
 # Convert to sf so can crop spatial by CAT- Crop spatially because I don't trust the site names are the same.
    Mac_Site_22 <- inner_join(MacPs, Site_Coords, by = "Site.ID") %>% 
@@ -735,29 +732,11 @@ This initial evidence pack doesn't include any ecological Water Company data, on
 #| label: Riverfly data from RP
 
 # Note the api is already filtered to everything after 2019
-ARMI <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/Riverfly__7_.csv")
+source("Supporting_Documentation/Riverfly_Citizen_Science_API.R")
 
-  OO <- ARMI %>% filter(!Location..Longitude== "NA",
-                        Recorded..Date == as.Date(Recorded..Date),
-                        Recorded..Date >= as.Date("01/01/2022")) 
-  
-  ARMI_sf <- st_as_sf(OO, coords= c("Location..Longitude", "Location..Latitude"), crs=4326)
+ARMI <- ARMI[CAT,] 
 
-  ARMI <- ARMI_sf[CAT,] 
-  
-ARMI %<>%
-  mutate(
-     DateTime = dmy_hm(paste0(ARMI$Recorded..Date, ARMI$Recorded..Time)),
-     Date = as.Date(DateTime)
-  ) %>% 
-  group_by(Site) %>%
-  mutate(
-      Survey_Count = n(),
-      Mean_Tot = round(mean(ARMI.Total, na.rm = TRUE),2)
-  ) %>% 
-    ungroup()
-
-pal_cs_inv <- colorBin(palette = "RdYlBu", domain=ARMI$Mean_Tot)
+pal_cs_inv <- colorBin(palette = "RdYlBu", domain=ARMI$Mean_Tot_22)
 
 ## Leaflet Map
 leaflet() %>% 
@@ -782,14 +761,14 @@ leaflet() %>%
  
     addCircleMarkers(data = ARMI,
                    radius = 10,
-                   fillColor = ~pal_cs_inv(ARMI$Mean_Tot),
+                   fillColor = ~pal_cs_inv(ARMI$Mean_Tot_22),
                    color = "black",
                    weight = 0.3,
                    fillOpacity = 1,
                    popup = paste0("Mean Total Score: ", ARMI$Mean_Tot,  
                                   "<br> Sample Count: ", ARMI$Survey_Count,
                                   "<br> Group: ", ARMI$Team,
-                                  "<br> From/ To: ", min(ARMI$Recorded..Date), "/ ", max(ARMI$Recorded..Date)),
+                                  "<br> From/ To: ", min(ARMI$Recorded__Date), "/ ", max(ARMI$Recorded..Date)),
                     options = pathOptions(zIndex = 999)) %>% 
  
     addLayersControl(overlayGroups = "Waterbodies",
