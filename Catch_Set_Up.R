@@ -2,10 +2,9 @@ library(sf)
 library(magrittr)
 library(tidyverse)
 library(leaflet)
-library(lubridate)
 
 # Enter catchment here
-Catchments <- c("Avon Bristol Urban")
+Catchments <- c("Avon Hampshire")
 
 catch <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/Interim_WFD_2022.shp")# Catchment shapefiles
 CAT <- catch[catch$OPCAT_NAME == Catchments,]

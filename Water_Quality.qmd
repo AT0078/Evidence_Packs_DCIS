@@ -280,7 +280,7 @@ The below map provides the whereabouts of continuous permitted WWtW and their li
 # Will include private discharges, continuous WWTW discharges, intermittent CSO discharges.
 
 # WWTW Continuous Discharges
-WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/STW_spreadsheet_DRAFT.xlsx", sheet= "MASTER", skip=1)
+WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/STW_spreadsheet_DRAFT.xlsx", sheet= "MASTER", skip=1)
 
 # Transform from E/N to Lat/Long  
   WWTW %<>% filter(!is.na(`Northing (Outlet)` | `Easting (Outlet)`)) %>% 
@@ -291,7 +291,7 @@ WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/STW_spreadsheet_DRAFT.xls
 ##################################################### ######################################################## #########################################################
 # CSO Intermittent Discharges
 # Filtered for Wessex water
-sewage <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/Copy_of_EDM_2023_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2023", skip=1)
+sewage <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/EDM_2024_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2023", skip=1)
 
 sewage$`Outlet Discharge NGR\r\n(EA Consents Database)` <-  gsub("n/a","", sewage$`Outlet Discharge NGR\r\n(EA Consents Database)`, fixed=T) #remove any junk
 
@@ -396,8 +396,8 @@ The below map provides a mean score of diffuse pollution per waterbody using the
 ```{r Map from ALERT tool}
 #| fig-cap: "Diffuse pollution pathways data taken from the Agricultural Land Environmental Risk Tool"
 
-# The input file geodatabase
-  gdb <- st_read("/dbfs/FileStore/WSX_HGray/WessexRiskAttributedOLF.gdb", quiet = TRUE)
+# This esri geodatabase file is acquired by emailing Crispin Hambidge, the data custodian of ALERT data
+gdb <- st_read("/dbfs/FileStore/WSX_HGray/ETL_Exports/WessexRiskAttributedOLF.gdb", quiet = TRUE)
 
 
 # Create a wb wide score and transform

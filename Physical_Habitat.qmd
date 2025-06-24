@@ -34,7 +34,7 @@ library(sf)
 library(tidyverse)
 library(lubridate)
 library(magrittr)
-
+library(leaflet)
 
 source("Catch_Set_Up.R")
 
@@ -128,8 +128,7 @@ The median RHS Habitat Quality Assessment Score in Wessex is `r summary(RHS_WSX$
 
 
 ```{r RHS data & Physical Mods}
-library(leaflet)
-library(lubridate)
+
 #Script which plots River Habitat Survey data.
 
 RHS <-   RHS %>% 
@@ -210,8 +209,6 @@ The below table shows RNAGs which either have morphology as their primary reason
 
 ```{r RNAG Datatable PhysHab}
 
-
-
 rnag1 <- RFF %>%  filter(PRESSURE_1 == "Morphology" |  PRESSURE_2 == "Morphology")
 
 rnag2 <- RFF %>%  filter(CLASS_ITEM_NAME == "Morphology") %>% 
@@ -290,16 +287,16 @@ The below map displays all types of barriers and when clicked on, reveals whethe
 library(jsonlite)
 library(httr)
 
-obs_wsx <-  read_sf("/dbfs/FileStore/WSX_HGray/River_obstructions_WSX.shp")
+obs_wsx <- read_sf("/dbfs/FileStore/WSX_HGray/ETL_Exports/river_obstacles_default.csv")
 
-obs_wsx$TYPE <- sub("ARTIFICIAL", "Artificial", obs_wsx$TYPE)
-obs_wsx$TYPE <- sub("NATURAL", "Natural", obs_wsx$TYPE)
+# convert river obstacles to sf
+obs_wsx <- obs_wsx %>% st_as_sf(coords = c("lng","lat"),crs=4326) 
 
-# .shp already cropped to Wessex area
-  
-  # SF merge so can filter by opcat.
-  obs_wsx <- obs_wsx %>% st_intersection(CAT)
-  
+# SF merge so can filter by opcat.
+obs_wsx <- obs_wsx %>% 
+  st_intersection(CAT) %>% 
+   mutate(across(where(is.character), ~na_if(.x, "")))
+
 
   square_green <-
   makeIcon(iconUrl = "https://www.freeiconspng.com/uploads/green-square-1.png",
@@ -315,8 +312,6 @@ obs_wsx$TYPE <- sub("NATURAL", "Natural", obs_wsx$TYPE)
     makeIcon(iconUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj6OSkMVt7i1BRqfbWDG0qhrM0SMhF0cXOfg&s",
              iconWidth = 18,
              iconHeight = 18)
-    
-  
   
   leaflet() %>% 
   addProviderTiles(providers$Esri) %>% 
@@ -344,9 +339,9 @@ obs_wsx$TYPE <- sub("NATURAL", "Natural", obs_wsx$TYPE)
                    ) %>% 
   addMarkers(data = obs_wsx,
              icon= square_green,
-               popup = ~paste0("Name: ", obs_wsx$SITE, 
-                               "<br>", "Type: ", obs_wsx$TEXTSTRING,
-               "<br>Fish Pass: ", obs_wsx$FISHPASSTY),
+               popup = ~paste0("Name: ", obs_wsx$site_name, 
+                               "<br>", "Type: ", obs_wsx$obstacle_type,
+               "<br>Fish Pass: ", obs_wsx$fish_pass),
              group="Obstacles") %>%
     
   addLayersControl(overlayGroups = c("RHS: Habitat Quality Assessment",

@@ -290,9 +290,10 @@ Geol_CAT <- Geol %>% st_intersection(CAT)
 
 The below map shows current riverine and coastal bathing waters.
 ```{r bathing waters map}
+
 # bathing waters 
 
-BW <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/Bathing_waters.xlsx")
+BW <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/Copy_of_Geo_data.xlsx")
 
 leaflet() %>%
       addProviderTiles(providers$Esri, group="Esri Basemap")%>%
