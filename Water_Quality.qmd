@@ -291,7 +291,7 @@ WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/STW_spreadshe
 ##################################################### ######################################################## #########################################################
 # CSO Intermittent Discharges
 # Filtered for Wessex water
-sewage <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/EDM_2024_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2023", skip=1)
+sewage <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/EDM_2024_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2024", skip=1)
 
 sewage$`Outlet Discharge NGR\r\n(EA Consents Database)` <-  gsub("n/a","", sewage$`Outlet Discharge NGR\r\n(EA Consents Database)`, fixed=T) #remove any junk
 
@@ -307,10 +307,15 @@ X <-    sewage %>% st_as_sf(coords= c("East", "North"), crs=27700) %>%
          
 # Crop sf
   sewage <- X[CAT,]
+
+ # Convert 1899-12-30 to POSIXct
+
+  # Excel origin   
+  origin <- as.POSIXct("1899-12-30 00:00:00", tz = "UTC")
+  durations_in_hrs <- as.numeric(sewage$`Total Duration (hh:mm:ss) all spills prior to processing through 12-24h count method` - origin, units = "hours")
+  sewage$Total_spill_hrs_2024 <- durations_in_hrs
   
-##################################################### ######################################################## #########################################################
-# Private Discharges
-  
+# Could add private discharges as here we only look at water company discharges
   
 ```
 
@@ -319,8 +324,10 @@ X <-    sewage %>% st_as_sf(coords= c("East", "North"), crs=27700) %>%
 #| fig-cap: "Wessex Water Continuous and Intermittent sewage discharges"
 
 
-PAL <- colorNumeric("YlOrBr", domain = sewage$`Total Duration (hrs) all spills prior to processing through 12-24h count method`)
-sequ <- seq(min(sewage$`Total Duration (hrs) all spills prior to processing through 12-24h count method`), max(sewage$`Total Duration (hrs) all spills prior to processing through 12-24h count method`), length.out = 5)
+PAL <- colorNumeric("YlOrBr", domain = sewage$Total_spill_hrs_2024)
+
+
+sequ <- seq(min(sewage$Total_spill_hrs_2024), max(sewage$Total_spill_hrs_2024), length.out = 5)
 
 leaflet() %>% 
   addProviderTiles(providers$Esri) %>% 
@@ -335,12 +342,12 @@ leaflet() %>%
             
             ) %>% 
   addCircleMarkers(data=sewage,
-                      radius = ~(sqrt(`Total Duration (hrs) all spills prior to processing through 12-24h count method`)-1), 
+                      radius = ~(sqrt(Total_spill_hrs_2024)-1), 
                       color = "black",
                       weight = 1,
-                      fillColor = ~PAL(`Total Duration (hrs) all spills prior to processing through 12-24h count method`),
+                      fillColor = ~PAL(Total_spill_hrs_2024),
                       fillOpacity = 1,
-                      popup = ~paste0("Annual Spill Count (2023): ", as.character(round(`Total Duration (hrs) all spills prior to processing through 12-24h count method`), 0), " hrs", "<br> At site: ", `Site Name\r\n(EA Consents Database)`),
+                      popup = ~paste0("Annual Spill Count (2023): ", as.character(round(Total_spill_hrs_2024), 0), " hrs", "<br> At site: ", `Site Name\r\n(EA Consents Database)`),
                    options = pathOptions(zIndex = 600),
                    group = "WxW CSO Sewage Discharge Points") %>%  
   addPolygons(data=CAT,
@@ -363,7 +370,7 @@ leaflet() %>%
   addLegend("bottomright", 
                       pal = PAL, 
                       values = sequ, 
-                      title = "Sewage Discharge <br> Total Hrs 2023",
+                      title = "Sewage Discharge <br> Total Hrs 2024",
                       group = "WxW CSO Sewage Discharge Points") %>% 
                     addScaleBar()  %>% 
   
@@ -1184,7 +1191,7 @@ leaflet() %>%
 
 BOD measurements from "crude sewage", "final sewage effluent" and "storm sewer overflow discharge" are omitted as to not skew the river sites on the map with localised, regulatory scores.
 
-```{r BOD 22-24 Monitoring Mapping}
+```{r BOD 22-25 Monitoring Mapping}
 
 binsss= c(0,4,5,6.5,9,Inf)
 pal_BOD <- colorBin(palette = "inferno", domain = WIMS_BOD$result, bins = binsss, reverse=T )
