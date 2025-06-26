@@ -450,7 +450,7 @@ inv_2022 <- inv %>%
 
 ```
 
-## 2022-2024 Monitoring
+## 2022-2025 Monitoring
 
 ```{r}
 
@@ -756,10 +756,10 @@ leaflet() %>%
                    color = "black",
                    weight = 0.3,
                    fillOpacity = 1,
-                   popup = paste0("Mean Total Score: ", ARMI$Mean_Tot,  
-                                  "<br> Sample Count: ", ARMI$Survey_Count,
-                                  "<br> Group: ", ARMI$Team,
-                                  "<br> From/ To: ", min(ARMI$Recorded__Date), "/ ", max(ARMI$Recorded..Date)),
+                   popup = paste0("<b>Mean Total Score: </b>", ARMI$Mean_Tot,  
+                                  "<br><b> Sample Count: </b>", ARMI$Survey_Count,
+                                  "<br><b> Group: </b>", ARMI$Team,
+                                  "<br><b> From/To: </b>", ARMI$Min_Sample_Date, "/ ", ARMI$Max_Sample_Date),
                     options = pathOptions(zIndex = 999)) %>% 
  
     addLayersControl(overlayGroups = "Waterbodies",
