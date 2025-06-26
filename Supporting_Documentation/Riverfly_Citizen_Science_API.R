@@ -5,9 +5,11 @@
 library(sf)
 library(magrittr)
 
-ARMI <- read_sf("https://services3.arcgis.com/Bb8lfThdhugyc4G3/arcgis/rest/services/Riverfly_static_download/FeatureServer/0/query?where=1%3D1&outFields=*&geometry=-7.437%2C49.874%2C1.968%2C52.289&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json")
-
-# Change date & time formating and apply a mean to all dates and those after 2022
+ARMI <- suppressWarnings(suppressMessages(
+  read_sf("https://services3.arcgis.com/Bb8lfThdhugyc4G3/arcgis/rest/services/Riverfly_static_download/FeatureServer/0/query?where=1%3D1&outFields=*&geometry=-7.437%2C49.874%2C1.968%2C52.289&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json") 
+))
+  
+  # Change date & time formating and apply a mean to all dates and those after 2022
 ARMI %<>% 
   mutate(
     Recorded__Date = ymd(Recorded__Date),
@@ -16,7 +18,9 @@ ARMI %<>%
   group_by(Site) %>%
   mutate(
     Survey_Count = n(),
-    Mean_Tot = round(mean(ARMI_Total, na.rm = TRUE),2)
+    Mean_Tot = round(mean(ARMI_Total, na.rm = TRUE),2),
+    Min_Sample_Date = min(Recorded__Date),
+    Max_Sample_Date = max(Recorded__Date)
   ) %>% 
   filter(
    year(Recorded__Date) > 2022
@@ -25,3 +29,4 @@ ARMI %<>%
     Mean_Tot_22 = round(mean(ARMI_Total, na.rm = TRUE),2)
   ) %>% 
   ungroup()
+
