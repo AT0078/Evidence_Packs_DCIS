@@ -456,11 +456,6 @@ ALERT <- gdb %>%
           #     popup = paste0("Diffuse Pollution Risk: ", ALERT_CAT$CatchmentRiskDesc,
            #                   "<br> Waterbody: ", ALERT_CAT$WB_NAME),
             #   group = "Diffuse Pollution Pathways") %>% 
-          addLegend("bottomleft",
-                    pal = pal_ALERT_N,
-                    values = ALERT_CAT$Catch_Overall_Risk,
-                    title = "Diffuse Pollution Risk",
-                    group = "Diffuse Pollution Pathways") %>% 
           addLegend("bottomright", 
                     pal = pal_ALERT, 
                     values = SEQ,
@@ -471,7 +466,7 @@ ALERT <- gdb %>%
             overlayGroups = c("Catchment Risk", "Diffuse Pollution Pathways"),
                            position = "topright",
                            options = layersControlOptions(collapsed = FALSE)) %>% 
-          hideGroup(c("Diffuse Pollution Pathways","Satellite Basemap"))
+          hideGroup("Satellite Basemap")
         
 
 ```
@@ -553,7 +548,7 @@ In order to give a monitoring overview, the below pop-up plots show data over th
 
 ```{r WFD Classifications at Site level}
 
-Phys_Chem_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/2022_Phys_Chem_Classification_QA_document__RAW_.xlsx", sheet= "Site Class")
+Phys_Chem_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_Phys_Chem_Classification_QA_document__RAW_.xlsx", sheet= "Site Class")
 
 # Filter by Wessex area and convert to sf
   Phys_Chem_Site <- Phys_Chem_Site %>% filter(SITE_EA_AREA == "Wessex") %>% 
@@ -1313,12 +1308,13 @@ This initial evidence pack doesn't include any water quality Water Company data,
                                radius=10, 
                                opacity = 1,
                                popup = paste0("Site: ",df$Site_Name,"<br> ",
-                                              "Mean Nitrate (ppm): ",df$Mean_Nitrate,
-                                              "<br> Collected at: ", df$created_at,
+                                              "Mean Nitrate (ppm): ",round(df$Mean_Nitrate,2),
+                                              "<br> Sampling Date Range: ", paste0(range(df$Date)[1], " to ", 
+                                               range(df$Date)[2],
                                               "<br> Mean sample count: ", df$C,
                                               "<br> <b>Site Photo<b> <br>",
-                               "<img src='", df$`X_Please_add_a_phot`, "' width='200' height='150'>"),
-                               options = pathOptions(zIndex = 999) ) %>%  
+                               "<img src='", df$`X_Please_add_a_phot`, "' width='200' height='150'>")),
+                               options = pathOptions(zIndex = 999)) %>%  
                                             
               
               addLegend(pal = pal_CS, values = df$Mean_Nitrate, opacity = 0.7,
