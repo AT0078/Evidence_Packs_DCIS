@@ -312,9 +312,12 @@ X <-    sewage %>% st_as_sf(coords= c("East", "North"), crs=27700) %>%
 
   # Excel origin   
   origin <- as.POSIXct("1899-12-30 00:00:00", tz = "UTC")
-  durations_in_hrs <- as.numeric(sewage$`Total Duration (hh:mm:ss) all spills prior to processing through 12-24h count method` - origin, units = "hours")
-  sewage$Total_spill_hrs_2024 <- durations_in_hrs
   
+  sewage %<>% 
+    mutate(
+      Total_spill_hrs_2024 = as.numeric(sewage$`Total Duration (hh:mm:ss) all spills prior to processing through 12-24h count method` - origin, units = "hours")
+          )
+
 # Could add private discharges as here we only look at water company discharges
   
 ```
@@ -327,7 +330,8 @@ X <-    sewage %>% st_as_sf(coords= c("East", "North"), crs=27700) %>%
 PAL <- colorNumeric("YlOrBr", domain = sewage$Total_spill_hrs_2024)
 
 
-sequ <- seq(min(sewage$Total_spill_hrs_2024), max(sewage$Total_spill_hrs_2024), length.out = 5)
+sequ <- seq(min(sewage$Total_spill_hrs_2024, na.rm = TRUE), 
+            max(sewage$Total_spill_hrs_2024, na.rm = TRUE), length.out = 5)
 
 leaflet() %>% 
   addProviderTiles(providers$Esri) %>% 
