@@ -273,7 +273,7 @@ Mes_Categ <- inner_join(Mes, Measures_Cat, by = "ACTION_UID") %>%
 
 ### Point Source Pollution
 
-The below map provides the whereabouts of continuous permitted WWtW and their likelihood of eutrophication, as well as the option to view intermittent CSO discharges for 2023. These provide some indication of the loading from point source pollution on waterbodies. Point source pollution from fish farms and private consented discharges are not mapped here but can be found on easimap.
+The below map provides the whereabouts of continuous permitted WWtW and their likelihood of eutrophication, as well as the option to view intermittent CSO discharges for 2024. These provide some indication of the loading from point source pollution on waterbodies. Point source pollution from fish farms and private consented discharges are not mapped here but can be found on easimap.
 
 ```{r Point Source Discharge plots}
 
@@ -463,7 +463,7 @@ ALERT <- gdb %>%
                     group = "Catchment Risk") %>%   # Adjusted group to match the layer group
           addScaleBar() %>% 
           addLayersControl(baseGroups = c("Esri Basemap", "Satellite Basemap"),
-            overlayGroups = c("Catchment Risk", "Diffuse Pollution Pathways"),
+            overlayGroups = c("Catchment Risk"),
                            position = "topright",
                            options = layersControlOptions(collapsed = FALSE)) %>% 
           hideGroup("Satellite Basemap")
@@ -578,6 +578,7 @@ Orthophosphate reactive as P (PO4-P) monitoring sites are grouped together per w
 ```{r violin plots of WIMS OrthoPhos}
 
 # Violin plot
+
 v <- ggplot(WIMS_P, aes(x = WB_NAME, y = result)) +
  # geom_violin(aes(fill = WB_NAME), color = "black", alpha = 0.5) +  # Violin plot with some transparency
   geom_boxplot(width = 0.05, color = "black", aes(fill = WB_NAME), alpha = 0.7) +  # Boxplot on top

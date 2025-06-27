@@ -717,7 +717,7 @@ CDE_Mac_19<- CDE %>%
 
 ## Third Party Data
 
-This initial evidence pack doesn't include any ecological Water Company data, only data taken directly from the Riverfly Partnership. Third-parties often have a different or un-aligned monitoring agenda to the Environment Agency. Eventually through influence, priorities can be aligned, however, initially data may not be exactly where the EA would require it. Here we view a site mean for citizen science riverfly sites from 2022 onwards.
+This initial evidence pack doesn't include any ecological Water Company data, only data taken directly from the Riverfly Partnership. Third-parties often have a different or un-aligned monitoring agenda to the Environment Agency. Eventually through influence, priorities can be aligned, however, initially data may not be exactly where the EA would require it. Here we view a site mean for citizen science riverfly sites (ARMI) from 2022 onwards.
 
 ```{r}
 #| label: Riverfly data from RP
