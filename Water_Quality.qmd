@@ -280,7 +280,7 @@ The below map provides the whereabouts of continuous permitted WWtW and their li
 # Will include private discharges, continuous WWTW discharges, intermittent CSO discharges.
 
 # WWTW Continuous Discharges
-WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/STW_spreadsheet_DRAFT.xlsx", sheet= "MASTER", skip=1)
+WWTW <- readxl:: read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/STW_spreadsheet_DRAFT.xlsx", sheet= "MASTER", skip=1)
 
 # Transform from E/N to Lat/Long  
   WWTW %<>% filter(!is.na(`Northing (Outlet)` | `Easting (Outlet)`)) %>% 
@@ -291,7 +291,7 @@ WWTW <- readxl:: read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/STW_spreadshe
 ##################################################### ######################################################## #########################################################
 # CSO Intermittent Discharges
 # Filtered for Wessex water
-sewage <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/EDM_2024_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2024", skip=1)
+sewage <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/EDM_2024_Storm_Overflow_Annual_Return___all_water_and_sewerage_companies.xlsx", sheet="Wessex Water 2024", skip=1)
 
 sewage$`Outlet Discharge NGR\r\n(EA Consents Database)` <-  gsub("n/a","", sewage$`Outlet Discharge NGR\r\n(EA Consents Database)`, fixed=T) #remove any junk
 
@@ -408,7 +408,7 @@ The below map provides a mean score of diffuse pollution per waterbody using the
 #| fig-cap: "Diffuse pollution pathways data taken from the Agricultural Land Environmental Risk Tool"
 
 # This esri geodatabase file is acquired by emailing Crispin Hambidge, the data custodian of ALERT data
-gdb <- st_read("/dbfs/FileStore/WSX_HGray/ETL_Exports/WessexRiskAttributedOLF.gdb", quiet = TRUE)
+gdb <- st_read("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/WessexRiskAttributedOLF.gdb", quiet = TRUE)
 
 
 # Create a wb wide score and transform
@@ -552,7 +552,7 @@ In order to give a monitoring overview, the below pop-up plots show data over th
 
 ```{r WFD Classifications at Site level}
 
-Phys_Chem_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_Phys_Chem_Classification_QA_document__RAW_.xlsx", sheet= "Site Class")
+Phys_Chem_Site <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/2022_Phys_Chem_Classification_QA_document__RAW_.xlsx", sheet= "Site Class")
 
 # Filter by Wessex area and convert to sf
   Phys_Chem_Site <- Phys_Chem_Site %>% filter(SITE_EA_AREA == "Wessex") %>% 
