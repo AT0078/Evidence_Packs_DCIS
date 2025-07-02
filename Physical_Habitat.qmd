@@ -287,7 +287,7 @@ The below map displays all types of barriers and when clicked on, reveals whethe
 library(jsonlite)
 library(httr)
 
-obs_wsx <- read_sf("/dbfs/FileStore/WSX_HGray/ETL_Exports/river_obstacles_default.csv")
+obs_wsx <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/river_obstacles_default.csv")
 
 # convert river obstacles to sf
 obs_wsx <- obs_wsx %>% st_as_sf(coords = c("lng","lat"),crs=4326) 
