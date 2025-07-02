@@ -23,16 +23,16 @@ CPS <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk
 
 
 #Temporary RNAGs transforms
-    RFF <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/RFF.csv")
+    RFF <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/RFF.csv")
     RFF <- RFF[RFF$OPERATIONAL_CATCHMENT %in% Catchments,]
 
     
     # Temporary Measures Transforms.
 # Provenenace: CPS SQL Server, EA Internal, SQL script reads, writes to csv then upload to databricks. 31/12/24
-    Measures_Class <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/Measure_Class.csv")  
-    Measures_WBs <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/wb_connections.csv") %>% 
+    Measures_Class <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/Measure_Class.csv")  
+    Measures_WBs <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/wb_connections.csv") %>% 
       filter(AREA_NAME== "Wessex")
-    Measures_Cat <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/MES_CATS.csv")  
+    Measures_Cat <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/MES_CATS.csv")  
     
     
     Mes <- Measures_WBs %>% filter(OPERATIONAL_CATCHMENT %in% Catchments)
