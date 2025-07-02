@@ -79,7 +79,7 @@ Groundwater catchments can overlap multiple surface water catchments.
 ```{r Groundwater Catchments}
 #import groundwater catchments dataset 
 
-  GWC <- read_sf("/dbfs/FileStore/WSX_HGray/ETL_Exports/WFD_Groundwater_Operational_Catchments_Cycle_3.shp") %>% 
+  GWC <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/WFD_Groundwater_Operational_Catchments_Cycle_3.shp") %>% 
                 st_transform(27700) %>%    # National grid so converted to 277700 then to 4326
                 st_transform(4326)
 
@@ -293,7 +293,7 @@ The below map shows current riverine and coastal bathing waters.
 
 # bathing waters 
 
-BW <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/Copy_of_Geo_data.xlsx")
+BW <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/Copy_of_Geo_data.xlsx")
 
 leaflet() %>%
       addProviderTiles(providers$Esri, group="Esri Basemap")%>%
