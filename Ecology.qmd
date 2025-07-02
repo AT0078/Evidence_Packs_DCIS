@@ -58,7 +58,7 @@ source("Catch_Set_Up.R")
 
 
 # Load your data
-CDE <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/WFD_Wessex_2024.csv")
+CDE <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/WFD_Wessex_2024.csv")
 
 CDE %<>% 
   filter(Operational.Catchment == unique(CAT$OPCAT_NAME)) %>% 
@@ -306,7 +306,7 @@ Invertebrates have been used to assess the ecological health of rivers as they a
 #| label: Inverts WFD 2022
 
 # Load Biosys data, need to replace with api 
-inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Inv_WSX.csv") %>% 
+inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Inv_WSX.csv") %>% 
                 rename_with(tolower)
 
 # Reformat
@@ -322,7 +322,7 @@ inver_join <- inver %>% rename(Northing = ngr_prefix,
                                ngr_prefix = northing) %>% select(2, Northing, easting, 106)
 
 # Load site level 2022 classifications.
-Invert_Site <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_C3_River_Invertebrates_Draft_Results_v1.xlsx", sheet= "Site results") %>% 
+Invert_Site <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/2022_C3_River_Invertebrates_Draft_Results_v1.xlsx", sheet= "Site results") %>% 
                     rename_with(make.names) %>% 
                     filter(Site.Area == "Wessex") %>% 
                     mutate(Site.ID = as.numeric(Site.ID))
@@ -340,7 +340,7 @@ CDE_Inv_19<- CDE %>%
                    Year == "2019")
 
 #Load in site coords
-Site_Coords <- read.csv("/dbfs/FileStore/WSX_HGray/ETL_Exports/Sites.csv") %>% 
+Site_Coords <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/Sites.csv") %>% 
                           rename_with(tolower) %>% 
                           rename(Site.ID = site_id) %>% 
                           mutate(Site.ID = as.numeric(Site.ID))
@@ -418,7 +418,7 @@ leaflet() %>%
 #| column: page
 
 # We need to merge to provide site level WFD classifications with X.Y data which we have in WIMS!
-inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Inv_WSX.csv") #%>% 
+inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Inv_WSX.csv") #%>% 
              #   rename_with(tolower)
 
 inv <- inv %>%
@@ -429,7 +429,7 @@ inv <- inv %>%
   filter(OPCAT_NAME == unique(CAT$OPCAT_NAME) & Date >= "2000-01-01")
 
 
-Rivers_250k <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Hydrology/Rivers_250k.shp")
+Rivers_250k <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Hydrology/Rivers_250k.shp")
 
 Rivs250 <- Rivers_250k %>% 
               st_transform(st_crs(4326)) %>% 
@@ -533,7 +533,7 @@ Fish can be used to indicate the ecological status of a river. Metrics on river 
 
 
 # Import & transform WFD Site Classificatiosns for most recent classification.
-    fish <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/RiverFish_SiteData_Results_For_QA.xlsx") %>%
+    fish <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/RiverFish_SiteData_Results_For_QA.xlsx") %>%
             filter(NFPDArea == "Wessex") %>% 
             mutate(`Survey(Ranked)NGR` =  gsub("n/a","", `Survey(Ranked)NGR`, fixed=T)) #remove any junk from NGR grid ref
 
@@ -643,7 +643,7 @@ CDE_Mac_19<- CDE %>%
 
 
 
-  MacPs <- readxl::read_excel("/dbfs/FileStore/WSX_HGray/ETL_Exports/2022_Cycle_3_River_Macrophytes_draft_sub_element_results_v3.xlsx", sheet = "2022_C3_Macrophytes_Site") %>% 
+  MacPs <- readxl::read_excel("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/2022_Cycle_3_River_Macrophytes_draft_sub_element_results_v3.xlsx", sheet = "2022_C3_Macrophytes_Site") %>% 
                             rename_with(make.names) 
 
 # Convert to sf so can crop spatial by CAT- Crop spatially because I don't trust the site names are the same.
