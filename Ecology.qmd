@@ -58,7 +58,7 @@ source("Catch_Set_Up.R")
 
 
 # Load your data
-CDE <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/WFD_Wessex_2024.csv")
+CDE <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/WFD_Wessex_2024.csv")
 
 CDE %<>% 
   filter(Operational.Catchment == unique(CAT$OPCAT_NAME)) %>% 
@@ -306,7 +306,7 @@ Invertebrates have been used to assess the ecological health of rivers as they a
 #| label: Inverts WFD 2022
 
 # Load Biosys data, need to replace with api 
-inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Inv_WSX.csv") %>% 
+inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Inv_WSX.csv") %>% 
                 rename_with(tolower)
 
 # Reformat
@@ -418,7 +418,7 @@ leaflet() %>%
 #| column: page
 
 # We need to merge to provide site level WFD classifications with X.Y data which we have in WIMS!
-inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Inv_WSX.csv") #%>% 
+inv <- read.csv("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Inv_WSX.csv") #%>% 
              #   rename_with(tolower)
 
 inv <- inv %>%
@@ -429,7 +429,7 @@ inv <- inv %>%
   filter(OPCAT_NAME == unique(CAT$OPCAT_NAME) & Date >= "2000-01-01")
 
 
-Rivers_250k <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.ukCEP/Hydrology/Rivers_250k.shp")
+Rivers_250k <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/CEP/Hydrology/Rivers_250k.shp")
 
 Rivs250 <- Rivers_250k %>% 
               st_transform(st_crs(4326)) %>% 
