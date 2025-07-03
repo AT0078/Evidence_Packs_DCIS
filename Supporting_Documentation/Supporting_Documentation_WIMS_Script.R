@@ -40,6 +40,8 @@ Remove_cols <-  c("resultQualifier.notation", "resultQualifier.@id", "resultQual
 for( x in 1: length(Deters)){
   
   for( z in 1: length(Years)){
+
+    # https://environment.data.gov.uk/water-quality/id/ea-area.html use this url to change the area code
     
     base_url <- "http://environment.data.gov.uk/water-quality/"
     ending <- paste0("data/measurement?_limit=999999&area=6-28&determinand=", Deters[x],"&year=", Years[z]) #filters all samples of orthophosphate.
