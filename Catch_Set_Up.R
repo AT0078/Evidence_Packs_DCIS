@@ -6,6 +6,7 @@ library(leaflet)
 # Enter catchment here
 Catchments <- c("Avon Hampshire")
 
+#This line filters the catch data to only include rows where the OPCAT_NAME column matches the value of the variable Catchments.
 catch <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/Interim_WFD_2022.shp")# Catchment shapefiles
 CAT <- catch[catch$OPCAT_NAME == Catchments,]
 
