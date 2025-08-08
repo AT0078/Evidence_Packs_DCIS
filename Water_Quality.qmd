@@ -406,7 +406,7 @@ The below map provides a mean score of diffuse pollution per waterbody using the
 ::: column-body-outset
 ```{r Map from ALERT tool}
 #| fig-cap: "Diffuse pollution pathways data taken from the Agricultural Land Environmental Risk Tool"
-
+#| eval: false
 # This esri geodatabase file is acquired by emailing Crispin Hambidge, the data custodian of ALERT data
 gdb <- st_read("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/ETL_Exports/WessexRiskAttributedOLF.gdb", quiet = TRUE)
 
