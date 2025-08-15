@@ -4,17 +4,24 @@ library(tidyverse)
 library(leaflet)
 
 # Enter catchment here
-Catchments <- c("Avon Hampshire")
+Catchments <- c("Teign")
 
 #This line filters the catch data to only include rows where the OPCAT_NAME column matches the value of the variable Catchments.
-catch <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/Interim_WFD_2022.shp")# Catchment shapefiles
+catch <- read_sf("/dbfs/mnt/lab/unrestricted/alex.taylor1@environment-agency.gov.uk/DCIS_Waterbodies.shp")# Catchment shapefiles
+#catch <- read_sf("/dbfs/mnt/lab/unrestricted/harry.gray@environment-agency.gov.uk/Interim_WFD_2022.shp")# Harry's original code
+
+#This filters the catch dataset to only include rows where the OPCAT_NAME column matches the value in the variable Catchments.
 CAT <- catch[catch$OPCAT_NAME == Catchments,]
 
-
+#st_union(CAT) merges all geometries in CAT into a single geometry (e.g., combining multiple polygons).
+#st_transform(4326) reprojects the geometry to the WGS84 coordinate system (EPSG:4326), which uses latitude and longitude.
 CAT_Union <- st_union(CAT) %>% 
   st_transform(4326)
 
+#This saves the original CAT (likely in British National Grid, EPSG:27700) into a new variable CAT_27700.
 CAT_27700 <- CAT
+
+#his reprojects the CAT dataset to WGS84, just like the unioned version
 CAT <- CAT %>%  st_transform(4326)
 
 
